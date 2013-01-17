@@ -1,3 +1,5 @@
+// Copyright 2013 Lawrence Kesteloot
+
 // Modification of the original walk.go file from the standard library,
 // modified to pass around pointers to nodes.
 
