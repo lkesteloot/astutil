@@ -3,6 +3,7 @@
 package astutil
 
 import (
+	"fmt"
 	"go/ast"
 )
 
@@ -11,8 +12,22 @@ func DuplicateNode(x ast.Node) ast.Node {
 		return nil
 	}
 
-	// XXX Switch on all nodes (interfaces?) and call specific function.
-	return nil
+	switch y := x.(type) {
+	case ast.Expr:
+		return DuplicateExpr(y)
+	case ast.Stmt:
+		return DuplicateStmt(y)
+	case ast.Decl:
+		return DuplicateDecl(y)
+	case ast.Spec:
+		return DuplicateSpec(y)
+	case *ast.File:
+		return DuplicateFile(y)
+	case *ast.Package:
+		return DuplicatePackage(y)
+	}
+
+	panic(fmt.Sprintf("Unknown node %T", x))
 }
 
 func DuplicateExpr(x ast.Expr) ast.Expr {
@@ -20,8 +35,54 @@ func DuplicateExpr(x ast.Expr) ast.Expr {
 		return nil
 	}
 
-	// XXX Switch on all nodes (interfaces?) and call specific function.
-	return nil
+	switch y := x.(type) {
+	case *ast.BadExpr:
+		return DuplicateBadExpr(y)
+	case *ast.Ident:
+		return DuplicateIdent(y)
+	case *ast.Ellipsis:
+		return DuplicateEllipsis(y)
+	case *ast.BasicLit:
+		return DuplicateBasicLit(y)
+	case *ast.FuncLit:
+		return DuplicateFuncLit(y)
+	case *ast.CompositeLit:
+		return DuplicateCompositeLit(y)
+	case *ast.ParenExpr:
+		return DuplicateParenExpr(y)
+	case *ast.SelectorExpr:
+		return DuplicateSelectorExpr(y)
+	case *ast.IndexExpr:
+		return DuplicateIndexExpr(y)
+	case *ast.SliceExpr:
+		return DuplicateSliceExpr(y)
+	case *ast.TypeAssertExpr:
+		return DuplicateTypeAssertExpr(y)
+	case *ast.CallExpr:
+		return DuplicateCallExpr(y)
+	case *ast.StarExpr:
+		return DuplicateStarExpr(y)
+	case *ast.UnaryExpr:
+		return DuplicateUnaryExpr(y)
+	case *ast.BinaryExpr:
+		return DuplicateBinaryExpr(y)
+	case *ast.KeyValueExpr:
+		return DuplicateKeyValueExpr(y)
+	case *ast.ArrayType:
+		return DuplicateArrayType(y)
+	case *ast.StructType:
+		return DuplicateStructType(y)
+	case *ast.FuncType:
+		return DuplicateFuncType(y)
+	case *ast.InterfaceType:
+		return DuplicateInterfaceType(y)
+	case *ast.MapType:
+		return DuplicateMapType(y)
+	case *ast.ChanType:
+		return DuplicateChanType(y)
+	}
+
+	panic(fmt.Sprintf("Unknown expr %T", x))
 }
 
 func DuplicateExprSlice(x []ast.Expr) []ast.Expr {
@@ -43,8 +104,66 @@ func DuplicateStmt(x ast.Stmt) ast.Stmt {
 		return nil
 	}
 
-	// XXX Switch on all nodes (interfaces?) and call specific function.
-	return nil
+	switch y := x.(type) {
+	case *ast.BadStmt:
+		return DuplicateBadStmt(y)
+	case *ast.DeclStmt:
+		return DuplicateDeclStmt(y)
+	case *ast.EmptyStmt:
+		return DuplicateEmptyStmt(y)
+	case *ast.LabeledStmt:
+		return DuplicateLabeledStmt(y)
+	case *ast.ExprStmt:
+		return DuplicateExprStmt(y)
+	case *ast.SendStmt:
+		return DuplicateSendStmt(y)
+	case *ast.IncDecStmt:
+		return DuplicateIncDecStmt(y)
+	case *ast.AssignStmt:
+		return DuplicateAssignStmt(y)
+	case *ast.GoStmt:
+		return DuplicateGoStmt(y)
+	case *ast.DeferStmt:
+		return DuplicateDeferStmt(y)
+	case *ast.ReturnStmt:
+		return DuplicateReturnStmt(y)
+	case *ast.BranchStmt:
+		return DuplicateBranchStmt(y)
+	case *ast.BlockStmt:
+		return DuplicateBlockStmt(y)
+	case *ast.IfStmt:
+		return DuplicateIfStmt(y)
+	case *ast.CaseClause:
+		return DuplicateCaseClause(y)
+	case *ast.SwitchStmt:
+		return DuplicateSwitchStmt(y)
+	case *ast.TypeSwitchStmt:
+		return DuplicateTypeSwitchStmt(y)
+	case *ast.CommClause:
+		return DuplicateCommClause(y)
+	case *ast.SelectStmt:
+		return DuplicateSelectStmt(y)
+	case *ast.ForStmt:
+		return DuplicateForStmt(y)
+	case *ast.RangeStmt:
+		return DuplicateRangeStmt(y)
+	}
+
+	panic(fmt.Sprintf("Unknown stmt %T", x))
+}
+
+func DuplicateStmtSlice(x []ast.Stmt) []ast.Stmt {
+	if x == nil {
+		return nil
+	}
+
+	y := []ast.Stmt{}
+
+	for _, z := range x {
+		y = append(y, DuplicateStmt(z))
+	}
+
+	return y
 }
 
 func DuplicateDecl(x ast.Decl) ast.Decl {
@@ -52,8 +171,61 @@ func DuplicateDecl(x ast.Decl) ast.Decl {
 		return nil
 	}
 
-	// XXX Switch on all nodes (interfaces?) and call specific function.
-	return nil
+	switch y := x.(type) {
+	case *ast.BadDecl:
+		return DuplicateBadDecl(y)
+	case *ast.GenDecl:
+		return DuplicateGenDecl(y)
+	case *ast.FuncDecl:
+		return DuplicateFuncDecl(y)
+	}
+
+	panic(fmt.Sprintf("Unknown decl %T", x))
+}
+
+func DuplicateDeclSlice(x []ast.Decl) []ast.Decl {
+	if x == nil {
+		return nil
+	}
+
+	y := []ast.Decl{}
+
+	for _, z := range x {
+		y = append(y, DuplicateDecl(z))
+	}
+
+	return y
+}
+
+func DuplicateSpec(x ast.Spec) ast.Spec {
+	if x == nil {
+		return nil
+	}
+
+	switch y := x.(type) {
+	case *ast.ImportSpec:
+		return DuplicateImportSpec(y)
+	case *ast.ValueSpec:
+		return DuplicateValueSpec(y)
+	case *ast.TypeSpec:
+		return DuplicateTypeSpec(y)
+	}
+
+	panic(fmt.Sprintf("Unknown spec %T", x))
+}
+
+func DuplicateSpecSlice(x []ast.Spec) []ast.Spec {
+	if x == nil {
+		return nil
+	}
+
+	y := []ast.Spec{}
+
+	for _, z := range x {
+		y = append(y, DuplicateSpec(z))
+	}
+
+	return y
 }
 
 func DuplicateComment(x *ast.Comment) *ast.Comment {
@@ -412,254 +584,375 @@ func DuplicateChanType(x *ast.ChanType) *ast.ChanType {
 	}
 }
 
-/*
-	// A BadStmt node is a placeholder for statements containing
-	// syntax errors for which no correct statement nodes can be
-	// created.
-	//
-	BadStmt struct {
-		From, To token.Pos // position range of bad statement
+func DuplicateBadStmt(x *ast.BadStmt) *ast.BadStmt {
+	if x == nil {
+		return nil
 	}
 
-	// A DeclStmt node represents a declaration in a statement list.
-	DeclStmt struct {
-		Decl Decl
+	return &ast.BadStmt{
+		From: x.From,
+		To: x.To,
 	}
-
-	// An EmptyStmt node represents an empty statement.
-	// The "position" of the empty statement is the position
-	// of the immediately preceding semicolon.
-	//
-	EmptyStmt struct {
-		Semicolon token.Pos // position of preceding ";"
-	}
-
-	// A LabeledStmt node represents a labeled statement.
-	LabeledStmt struct {
-		Label *Ident
-		Colon token.Pos // position of ":"
-		Stmt  Stmt
-	}
-
-	// An ExprStmt node represents a (stand-alone) expression
-	// in a statement list.
-	//
-	ExprStmt struct {
-		X Expr // expression
-	}
-
-	// A SendStmt node represents a send statement.
-	SendStmt struct {
-		Chan  Expr
-		Arrow token.Pos // position of "<-"
-		Value Expr
-	}
-
-	// An IncDecStmt node represents an increment or decrement statement.
-	IncDecStmt struct {
-		X      Expr
-		TokPos token.Pos   // position of Tok
-		Tok    token.Token // INC or DEC
-	}
-
-	// An AssignStmt node represents an assignment or
-	// a short variable declaration.
-	//
-	AssignStmt struct {
-		Lhs    []Expr
-		TokPos token.Pos   // position of Tok
-		Tok    token.Token // assignment token, DEFINE
-		Rhs    []Expr
-	}
-
-	// A GoStmt node represents a go statement.
-	GoStmt struct {
-		Go   token.Pos // position of "go" keyword
-		Call *CallExpr
-	}
-
-	// A DeferStmt node represents a defer statement.
-	DeferStmt struct {
-		Defer token.Pos // position of "defer" keyword
-		Call  *CallExpr
-	}
-
-	// A ReturnStmt node represents a return statement.
-	ReturnStmt struct {
-		Return  token.Pos // position of "return" keyword
-		Results []Expr    // result expressions; or nil
-	}
-
-	// A BranchStmt node represents a break, continue, goto,
-	// or fallthrough statement.
-	//
-	BranchStmt struct {
-		TokPos token.Pos   // position of Tok
-		Tok    token.Token // keyword token (BREAK, CONTINUE, GOTO, FALLTHROUGH)
-		Label  *Ident      // label name; or nil
-	}
-
-	// A BlockStmt node represents a braced statement list.
-	BlockStmt struct {
-		Lbrace token.Pos // position of "{"
-		List   []Stmt
-		Rbrace token.Pos // position of "}"
-	}
-
-	// An IfStmt node represents an if statement.
-	IfStmt struct {
-		If   token.Pos // position of "if" keyword
-		Init Stmt      // initialization statement; or nil
-		Cond Expr      // condition
-		Body *BlockStmt
-		Else Stmt // else branch; or nil
-	}
-
-	// A CaseClause represents a case of an expression or type switch statement.
-	CaseClause struct {
-		Case  token.Pos // position of "case" or "default" keyword
-		List  []Expr    // list of expressions or types; nil means default case
-		Colon token.Pos // position of ":"
-		Body  []Stmt    // statement list; or nil
-	}
-
-	// A SwitchStmt node represents an expression switch statement.
-	SwitchStmt struct {
-		Switch token.Pos  // position of "switch" keyword
-		Init   Stmt       // initialization statement; or nil
-		Tag    Expr       // tag expression; or nil
-		Body   *BlockStmt // CaseClauses only
-	}
-
-	// An TypeSwitchStmt node represents a type switch statement.
-	TypeSwitchStmt struct {
-		Switch token.Pos  // position of "switch" keyword
-		Init   Stmt       // initialization statement; or nil
-		Assign Stmt       // x := y.(type) or y.(type)
-		Body   *BlockStmt // CaseClauses only
-	}
-
-	// A CommClause node represents a case of a select statement.
-	CommClause struct {
-		Case  token.Pos // position of "case" or "default" keyword
-		Comm  Stmt      // send or receive statement; nil means default case
-		Colon token.Pos // position of ":"
-		Body  []Stmt    // statement list; or nil
-	}
-
-	// An SelectStmt node represents a select statement.
-	SelectStmt struct {
-		Select token.Pos  // position of "select" keyword
-		Body   *BlockStmt // CommClauses only
-	}
-
-	// A ForStmt represents a for statement.
-	ForStmt struct {
-		For  token.Pos // position of "for" keyword
-		Init Stmt      // initialization statement; or nil
-		Cond Expr      // condition; or nil
-		Post Stmt      // post iteration statement; or nil
-		Body *BlockStmt
-	}
-
-	// A RangeStmt represents a for statement with a range clause.
-	RangeStmt struct {
-		For        token.Pos   // position of "for" keyword
-		Key, Value Expr        // Value may be nil
-		TokPos     token.Pos   // position of Tok
-		Tok        token.Token // ASSIGN, DEFINE
-		X          Expr        // value to range over
-		Body       *BlockStmt
-	}
-
-	// The Spec type stands for any of *ImportSpec, *ValueSpec, and *TypeSpec.
-	Spec interface {
-		Node
-		specNode()
-	}
-
-	// An ImportSpec node represents a single package import.
-	ImportSpec struct {
-		Doc     *CommentGroup // associated documentation; or nil
-		Name    *Ident        // local package name (including "."); or nil
-		Path    *BasicLit     // import path
-		Comment *CommentGroup // line comments; or nil
-		EndPos  token.Pos     // end of spec (overrides Path.Pos if nonzero)
-	}
-
-	// A ValueSpec node represents a constant or variable declaration
-	// (ConstSpec or VarSpec production).
-	//
-	ValueSpec struct {
-		Doc     *CommentGroup // associated documentation; or nil
-		Names   []*Ident      // value names (len(Names) > 0)
-		Type    Expr          // value type; or nil
-		Values  []Expr        // initial values; or nil
-		Comment *CommentGroup // line comments; or nil
-	}
-
-	// A TypeSpec node represents a type declaration (TypeSpec production).
-	TypeSpec struct {
-		Doc     *CommentGroup // associated documentation; or nil
-		Name    *Ident        // type name
-		Type    Expr          // *Ident, *ParenExpr, *SelectorExpr, *StarExpr, or any of the *XxxTypes
-		Comment *CommentGroup // line comments; or nil
-	}
-
-	// A BadDecl node is a placeholder for declarations containing
-	// syntax errors for which no correct declaration nodes can be
-	// created.
-	//
-	BadDecl struct {
-		From, To token.Pos // position range of bad declaration
-	}
-
-	// A GenDecl node (generic declaration node) represents an import,
-	// constant, type or variable declaration. A valid Lparen position
-	// (Lparen.Line > 0) indicates a parenthesized declaration.
-	//
-	// Relationship between Tok value and Specs element type:
-	//
-	//	token.IMPORT  *ImportSpec
-	//	token.CONST   *ValueSpec
-	//	token.TYPE    *TypeSpec
-	//	token.VAR     *ValueSpec
-	//
-	GenDecl struct {
-		Doc    *CommentGroup // associated documentation; or nil
-		TokPos token.Pos     // position of Tok
-		Tok    token.Token   // IMPORT, CONST, TYPE, VAR
-		Lparen token.Pos     // position of '(', if any
-		Specs  []Spec
-		Rparen token.Pos // position of ')', if any
-	}
-
-	// A FuncDecl node represents a function declaration.
-	FuncDecl struct {
-		Doc  *CommentGroup // associated documentation; or nil
-		Recv *FieldList    // receiver (methods); or nil (functions)
-		Name *Ident        // function/method name
-		Type *FuncType     // position of Func keyword, parameters and results
-		Body *BlockStmt    // function body; or nil (forward declaration)
-	}
-)
-
-type File struct {
-	Doc        *CommentGroup   // associated documentation; or nil
-	Package    token.Pos       // position of "package" keyword
-	Name       *Ident          // package name
-	Decls      []Decl          // top-level declarations; or nil
-	Scope      *Scope          // package scope (this file only)
-	Imports    []*ImportSpec   // imports in this file
-	Unresolved []*Ident        // unresolved identifiers in this file
-	Comments   []*CommentGroup // list of all comments in the source file
 }
 
-type Package struct {
-	Name    string             // package name
-	Scope   *Scope             // package scope across all files
-	Imports map[string]*Object // map of package id -> package object
-	Files   map[string]*File   // Go source files by filename
+func DuplicateDeclStmt(x *ast.DeclStmt) *ast.DeclStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.DeclStmt{
+		Decl: DuplicateDecl(x.Decl),
+	}
 }
 
-*/
+func DuplicateEmptyStmt(x *ast.EmptyStmt) *ast.EmptyStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.EmptyStmt{
+		Semicolon: x.Semicolon,
+	}
+}
+
+func DuplicateLabeledStmt(x *ast.LabeledStmt) *ast.LabeledStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.LabeledStmt{
+		Label: DuplicateIdent(x.Label),
+		Colon: x.Colon,
+		Stmt: DuplicateStmt(x.Stmt),
+	}
+}
+
+func DuplicateExprStmt(x *ast.ExprStmt) *ast.ExprStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.ExprStmt{
+		X: DuplicateExpr(x.X),
+	}
+}
+
+func DuplicateSendStmt(x *ast.SendStmt) *ast.SendStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.SendStmt{
+		Chan: DuplicateExpr(x.Chan),
+		Arrow: x.Arrow,
+		Value: DuplicateExpr(x.Value),
+	}
+}
+
+func DuplicateIncDecStmt(x *ast.IncDecStmt) *ast.IncDecStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.IncDecStmt{
+		X: DuplicateExpr(x.X),
+		TokPos: x.TokPos,
+		Tok: x.Tok,
+	}
+}
+
+func DuplicateAssignStmt(x *ast.AssignStmt) *ast.AssignStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.AssignStmt{
+		Lhs: DuplicateExprSlice(x.Lhs),
+		TokPos: x.TokPos,
+		Tok: x.Tok,
+		Rhs: DuplicateExprSlice(x.Rhs),
+	}
+}
+
+func DuplicateGoStmt(x *ast.GoStmt) *ast.GoStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.GoStmt{
+		Go: x.Go,
+		Call: DuplicateCallExpr(x.Call),
+	}
+}
+
+func DuplicateDeferStmt(x *ast.DeferStmt) *ast.DeferStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.DeferStmt{
+		Defer: x.Defer,
+		Call: DuplicateCallExpr(x.Call),
+	}
+}
+
+func DuplicateReturnStmt(x *ast.ReturnStmt) *ast.ReturnStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.ReturnStmt{
+		Return: x.Return,
+		Results: DuplicateExprSlice(x.Results),
+	}
+}
+
+func DuplicateBranchStmt(x *ast.BranchStmt) *ast.BranchStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.BranchStmt{
+		TokPos: x.TokPos,
+		Tok: x.Tok,
+		Label: DuplicateIdent(x.Label),
+	}
+}
+
+func DuplicateBlockStmt(x *ast.BlockStmt) *ast.BlockStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.BlockStmt{
+		Lbrace: x.Lbrace,
+		List: DuplicateStmtSlice(x.List),
+		Rbrace: x.Rbrace,
+	}
+}
+
+func DuplicateIfStmt(x *ast.IfStmt) *ast.IfStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.IfStmt{
+		If: x.If,
+		Init: DuplicateStmt(x.Init),
+		Cond: DuplicateExpr(x.Cond),
+		Body: DuplicateBlockStmt(x.Body),
+		Else: DuplicateStmt(x.Else),
+	}
+}
+
+func DuplicateCaseClause(x *ast.CaseClause) *ast.CaseClause {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.CaseClause{
+		Case: x.Case,
+		List: DuplicateExprSlice(x.List),
+		Colon: x.Colon,
+		Body: DuplicateStmtSlice(x.Body),
+	}
+}
+
+func DuplicateSwitchStmt(x *ast.SwitchStmt) *ast.SwitchStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.SwitchStmt{
+		Switch: x.Switch,
+		Init: DuplicateStmt(x.Init),
+		Tag: DuplicateExpr(x.Tag),
+		Body: DuplicateBlockStmt(x.Body),
+	}
+}
+
+func DuplicateTypeSwitchStmt(x *ast.TypeSwitchStmt) *ast.TypeSwitchStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.TypeSwitchStmt{
+		Switch: x.Switch,
+		Init: DuplicateStmt(x.Init),
+		Assign: DuplicateStmt(x.Assign),
+		Body: DuplicateBlockStmt(x.Body),
+	}
+}
+
+func DuplicateCommClause(x *ast.CommClause) *ast.CommClause {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.CommClause{
+		Case: x.Case,
+		Comm: DuplicateStmt(x.Comm),
+		Colon: x.Colon,
+		Body: DuplicateStmtSlice(x.Body),
+	}
+}
+
+func DuplicateSelectStmt(x *ast.SelectStmt) *ast.SelectStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.SelectStmt{
+		Select: x.Select,
+		Body: DuplicateBlockStmt(x.Body),
+	}
+}
+
+func DuplicateForStmt(x *ast.ForStmt) *ast.ForStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.ForStmt{
+		For: x.For,
+		Init: DuplicateStmt(x.Init),
+		Cond: DuplicateExpr(x.Cond),
+		Post: DuplicateStmt(x.Post),
+		Body: DuplicateBlockStmt(x.Body),
+	}
+}
+
+func DuplicateRangeStmt(x *ast.RangeStmt) *ast.RangeStmt {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.RangeStmt{
+		For: x.For,
+		Key: DuplicateExpr(x.Key),
+		Value: DuplicateExpr(x.Value),
+		TokPos: x.TokPos,
+		Tok: x.Tok,
+		X: DuplicateExpr(x.X),
+		Body: DuplicateBlockStmt(x.Body),
+	}
+}
+
+func DuplicateImportSpec(x *ast.ImportSpec) *ast.ImportSpec {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.ImportSpec{
+		Doc: DuplicateCommentGroup(x.Doc),
+		Name: DuplicateIdent(x.Name),
+		Path: DuplicateBasicLit(x.Path),
+		Comment: DuplicateCommentGroup(x.Comment),
+		EndPos: x.EndPos,
+	}
+}
+
+func DuplicateValueSpec(x *ast.ValueSpec) *ast.ValueSpec {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.ValueSpec{
+		Doc: DuplicateCommentGroup(x.Doc),
+		Names: DuplicateIdentSlice(x.Names),
+		Type: DuplicateExpr(x.Type),
+		Values: DuplicateExprSlice(x.Values),
+		Comment: DuplicateCommentGroup(x.Comment),
+	}
+}
+
+func DuplicateTypeSpec(x *ast.TypeSpec) *ast.TypeSpec {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.TypeSpec{
+		Doc: DuplicateCommentGroup(x.Doc),
+		Name: DuplicateIdent(x.Name),
+		Type: DuplicateExpr(x.Type),
+		Comment: DuplicateCommentGroup(x.Comment),
+
+	}
+}
+
+func DuplicateBadDecl(x *ast.BadDecl) *ast.BadDecl {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.BadDecl{
+		From: x.From,
+		To: x.To,
+	}
+}
+
+func DuplicateGenDecl(x *ast.GenDecl) *ast.GenDecl {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.GenDecl{
+		Doc: DuplicateCommentGroup(x.Doc),
+		TokPos: x.TokPos,
+		Tok: x.Tok,
+		Lparen: x.Lparen,
+		Specs: DuplicateSpecSlice(x.Specs),
+		Rparen: x.Rparen,
+	}
+}
+
+func DuplicateFuncDecl(x *ast.FuncDecl) *ast.FuncDecl {
+	if x == nil {
+		return nil
+	}
+
+	return &ast.FuncDecl{
+		Doc: DuplicateCommentGroup(x.Doc),
+		Recv: DuplicateFieldList(x.Recv),
+		Name: DuplicateIdent(x.Name),
+		Type: DuplicateFuncType(x.Type),
+		Body: DuplicateBlockStmt(x.Body),
+	}
+}
+
+// The Scope field is not duplicated; it points to the old tree's object. The
+// Imports, Unresolved, and Comments fields are nil.
+func DuplicateFile(x *ast.File) *ast.File {
+	if x == nil {
+		return nil
+	}
+
+	// XXX Some of these should be references to items within the new tree.
+	// Perhaps I should set up the links from scratch.
+	return &ast.File{
+		Doc: DuplicateCommentGroup(x.Doc),
+		Package: x.Package,
+		Name: DuplicateIdent(x.Name),
+		Decls: DuplicateDeclSlice(x.Decls),
+		Scope: x.Scope,
+		Imports: nil,
+		Unresolved: nil,
+		Comments: nil,
+	}
+}
+
+// The Scope field is not duplicated; it points to the old tree's object. The
+// Imports and Files fields are nil.
+func DuplicatePackage(x *ast.Package) *ast.Package {
+	if x == nil {
+		return nil
+	}
+
+	// XXX Should make internal references.
+	return &ast.Package{
+		Name: x.Name,
+		Scope: x.Scope,
+		Imports: nil,
+		Files: nil,
+	}
+}
