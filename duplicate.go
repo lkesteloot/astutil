@@ -7,6 +7,7 @@ import (
 	"go/ast"
 )
 
+// Makes a deep copy of the syntax tree rooted at the Node.
 func DuplicateNode(x ast.Node) ast.Node {
 	if x == nil {
 		return nil
@@ -30,6 +31,7 @@ func DuplicateNode(x ast.Node) ast.Node {
 	panic(fmt.Sprintf("Unknown node %T", x))
 }
 
+// Makes a deep copy of the syntax tree rooted at the Expr.
 func DuplicateExpr(x ast.Expr) ast.Expr {
 	if x == nil {
 		return nil
@@ -85,6 +87,7 @@ func DuplicateExpr(x ast.Expr) ast.Expr {
 	panic(fmt.Sprintf("Unknown expr %T", x))
 }
 
+// Makes a deep copy of the slice of syntax trees rooted at the Exprs.
 func DuplicateExprSlice(x []ast.Expr) []ast.Expr {
 	if x == nil {
 		return nil
@@ -99,6 +102,7 @@ func DuplicateExprSlice(x []ast.Expr) []ast.Expr {
 	return y
 }
 
+// Makes a deep copy of the syntax tree rooted at the Stmt.
 func DuplicateStmt(x ast.Stmt) ast.Stmt {
 	if x == nil {
 		return nil
@@ -152,6 +156,7 @@ func DuplicateStmt(x ast.Stmt) ast.Stmt {
 	panic(fmt.Sprintf("Unknown stmt %T", x))
 }
 
+// Makes a deep copy of the slice of syntax trees rooted at the Stmts.
 func DuplicateStmtSlice(x []ast.Stmt) []ast.Stmt {
 	if x == nil {
 		return nil
@@ -166,6 +171,7 @@ func DuplicateStmtSlice(x []ast.Stmt) []ast.Stmt {
 	return y
 }
 
+// Makes a deep copy of the syntax tree rooted at the Decl.
 func DuplicateDecl(x ast.Decl) ast.Decl {
 	if x == nil {
 		return nil
@@ -183,6 +189,7 @@ func DuplicateDecl(x ast.Decl) ast.Decl {
 	panic(fmt.Sprintf("Unknown decl %T", x))
 }
 
+// Makes a deep copy of the slice of syntax trees rooted at the Decls.
 func DuplicateDeclSlice(x []ast.Decl) []ast.Decl {
 	if x == nil {
 		return nil
@@ -197,6 +204,7 @@ func DuplicateDeclSlice(x []ast.Decl) []ast.Decl {
 	return y
 }
 
+// Makes a deep copy of the syntax tree rooted at the Spec.
 func DuplicateSpec(x ast.Spec) ast.Spec {
 	if x == nil {
 		return nil
@@ -214,6 +222,7 @@ func DuplicateSpec(x ast.Spec) ast.Spec {
 	panic(fmt.Sprintf("Unknown spec %T", x))
 }
 
+// Makes a deep copy of the slice of syntax trees rooted at the Specs.
 func DuplicateSpecSlice(x []ast.Spec) []ast.Spec {
 	if x == nil {
 		return nil
@@ -228,6 +237,7 @@ func DuplicateSpecSlice(x []ast.Spec) []ast.Spec {
 	return y
 }
 
+// Makes a deep copy of the syntax tree rooted at the Comment.
 func DuplicateComment(x *ast.Comment) *ast.Comment {
 	if x == nil {
 		return nil
@@ -239,6 +249,7 @@ func DuplicateComment(x *ast.Comment) *ast.Comment {
 	}
 }
 
+// Makes a deep copy of the slice of syntax trees rooted at the Comments.
 func DuplicateCommentSlice(x []*ast.Comment) []*ast.Comment {
 	if x == nil {
 		return nil
@@ -253,6 +264,7 @@ func DuplicateCommentSlice(x []*ast.Comment) []*ast.Comment {
 	return y
 }
 
+// Makes a deep copy of the syntax tree rooted at the CommentGroup.
 func DuplicateCommentGroup(x *ast.CommentGroup) *ast.CommentGroup {
 	if x == nil {
 		return nil
@@ -263,6 +275,7 @@ func DuplicateCommentGroup(x *ast.CommentGroup) *ast.CommentGroup {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the Field.
 func DuplicateField(x *ast.Field) *ast.Field {
 	if x == nil {
 		return nil
@@ -277,6 +290,7 @@ func DuplicateField(x *ast.Field) *ast.Field {
 	}
 }
 
+// Makes a deep copy of the slice of syntax trees rooted at the Fields.
 func DuplicateFieldSlice(x []*ast.Field) []*ast.Field {
 	if x == nil {
 		return nil
@@ -291,6 +305,7 @@ func DuplicateFieldSlice(x []*ast.Field) []*ast.Field {
 	return y
 }
 
+// Makes a deep copy of the syntax tree rooted at the FieldList.
 func DuplicateFieldList(x *ast.FieldList) *ast.FieldList {
 	if x == nil {
 		return nil
@@ -303,6 +318,7 @@ func DuplicateFieldList(x *ast.FieldList) *ast.FieldList {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the BadExpr.
 func DuplicateBadExpr(x *ast.BadExpr) *ast.BadExpr {
 	if x == nil {
 		return nil
@@ -314,8 +330,9 @@ func DuplicateBadExpr(x *ast.BadExpr) *ast.BadExpr {
 	}
 }
 
-// The Object pointed to by the Obj field is not duplicated. Its fields point to the
-// tree being copied.
+// Makes a deep copy of the syntax tree rooted at the Ident. The Object
+// pointed to by the Obj field is not duplicated. Its fields point to the tree
+// being copied.
 func DuplicateIdent(x *ast.Ident) *ast.Ident {
 	if x == nil {
 		return nil
@@ -328,6 +345,7 @@ func DuplicateIdent(x *ast.Ident) *ast.Ident {
 	}
 }
 
+// Makes a deep copy of the slice of syntax trees rooted at the Idents.
 func DuplicateIdentSlice(x []*ast.Ident) []*ast.Ident {
 	if x == nil {
 		return nil
@@ -342,6 +360,7 @@ func DuplicateIdentSlice(x []*ast.Ident) []*ast.Ident {
 	return y
 }
 
+// Makes a deep copy of the syntax tree rooted at the Ellipsis.
 func DuplicateEllipsis(x *ast.Ellipsis) *ast.Ellipsis {
 	if x == nil {
 		return nil
@@ -353,6 +372,7 @@ func DuplicateEllipsis(x *ast.Ellipsis) *ast.Ellipsis {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the BasicLit.
 func DuplicateBasicLit(x *ast.BasicLit) *ast.BasicLit {
 	if x == nil {
 		return nil
@@ -365,6 +385,7 @@ func DuplicateBasicLit(x *ast.BasicLit) *ast.BasicLit {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the FuncLit.
 func DuplicateFuncLit(x *ast.FuncLit) *ast.FuncLit {
 	if x == nil {
 		return nil
@@ -376,6 +397,7 @@ func DuplicateFuncLit(x *ast.FuncLit) *ast.FuncLit {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the CompositeLit.
 func DuplicateCompositeLit(x *ast.CompositeLit) *ast.CompositeLit {
 	if x == nil {
 		return nil
@@ -389,6 +411,7 @@ func DuplicateCompositeLit(x *ast.CompositeLit) *ast.CompositeLit {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the ParenExpr.
 func DuplicateParenExpr(x *ast.ParenExpr) *ast.ParenExpr {
 	if x == nil {
 		return nil
@@ -401,6 +424,7 @@ func DuplicateParenExpr(x *ast.ParenExpr) *ast.ParenExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the SelectorExpr.
 func DuplicateSelectorExpr(x *ast.SelectorExpr) *ast.SelectorExpr {
 	if x == nil {
 		return nil
@@ -412,6 +436,7 @@ func DuplicateSelectorExpr(x *ast.SelectorExpr) *ast.SelectorExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the IndexExpr.
 func DuplicateIndexExpr(x *ast.IndexExpr) *ast.IndexExpr {
 	if x == nil {
 		return nil
@@ -425,6 +450,7 @@ func DuplicateIndexExpr(x *ast.IndexExpr) *ast.IndexExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the SliceExpr.
 func DuplicateSliceExpr(x *ast.SliceExpr) *ast.SliceExpr {
 	if x == nil {
 		return nil
@@ -439,6 +465,7 @@ func DuplicateSliceExpr(x *ast.SliceExpr) *ast.SliceExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the TypeAssertExpr.
 func DuplicateTypeAssertExpr(x *ast.TypeAssertExpr) *ast.TypeAssertExpr {
 	if x == nil {
 		return nil
@@ -450,6 +477,7 @@ func DuplicateTypeAssertExpr(x *ast.TypeAssertExpr) *ast.TypeAssertExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the CallExpr.
 func DuplicateCallExpr(x *ast.CallExpr) *ast.CallExpr {
 	if x == nil {
 		return nil
@@ -464,6 +492,7 @@ func DuplicateCallExpr(x *ast.CallExpr) *ast.CallExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the StarExpr.
 func DuplicateStarExpr(x *ast.StarExpr) *ast.StarExpr {
 	if x == nil {
 		return nil
@@ -475,6 +504,7 @@ func DuplicateStarExpr(x *ast.StarExpr) *ast.StarExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the UnaryExpr.
 func DuplicateUnaryExpr(x *ast.UnaryExpr) *ast.UnaryExpr {
 	if x == nil {
 		return nil
@@ -487,6 +517,7 @@ func DuplicateUnaryExpr(x *ast.UnaryExpr) *ast.UnaryExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the BinaryExpr.
 func DuplicateBinaryExpr(x *ast.BinaryExpr) *ast.BinaryExpr {
 	if x == nil {
 		return nil
@@ -500,6 +531,7 @@ func DuplicateBinaryExpr(x *ast.BinaryExpr) *ast.BinaryExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the KeyValueExpr.
 func DuplicateKeyValueExpr(x *ast.KeyValueExpr) *ast.KeyValueExpr {
 	if x == nil {
 		return nil
@@ -512,6 +544,7 @@ func DuplicateKeyValueExpr(x *ast.KeyValueExpr) *ast.KeyValueExpr {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the ArrayType.
 func DuplicateArrayType(x *ast.ArrayType) *ast.ArrayType {
 	if x == nil {
 		return nil
@@ -524,6 +557,7 @@ func DuplicateArrayType(x *ast.ArrayType) *ast.ArrayType {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the StructType.
 func DuplicateStructType(x *ast.StructType) *ast.StructType {
 	if x == nil {
 		return nil
@@ -536,6 +570,7 @@ func DuplicateStructType(x *ast.StructType) *ast.StructType {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the FuncType.
 func DuplicateFuncType(x *ast.FuncType) *ast.FuncType {
 	if x == nil {
 		return nil
@@ -548,6 +583,7 @@ func DuplicateFuncType(x *ast.FuncType) *ast.FuncType {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the InterfaceType.
 func DuplicateInterfaceType(x *ast.InterfaceType) *ast.InterfaceType {
 	if x == nil {
 		return nil
@@ -560,6 +596,7 @@ func DuplicateInterfaceType(x *ast.InterfaceType) *ast.InterfaceType {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the MapType.
 func DuplicateMapType(x *ast.MapType) *ast.MapType {
 	if x == nil {
 		return nil
@@ -572,6 +609,7 @@ func DuplicateMapType(x *ast.MapType) *ast.MapType {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the ChanType.
 func DuplicateChanType(x *ast.ChanType) *ast.ChanType {
 	if x == nil {
 		return nil
@@ -584,6 +622,7 @@ func DuplicateChanType(x *ast.ChanType) *ast.ChanType {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the BadStmt.
 func DuplicateBadStmt(x *ast.BadStmt) *ast.BadStmt {
 	if x == nil {
 		return nil
@@ -595,6 +634,7 @@ func DuplicateBadStmt(x *ast.BadStmt) *ast.BadStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the DeclStmt.
 func DuplicateDeclStmt(x *ast.DeclStmt) *ast.DeclStmt {
 	if x == nil {
 		return nil
@@ -605,6 +645,7 @@ func DuplicateDeclStmt(x *ast.DeclStmt) *ast.DeclStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the EmptyStmt.
 func DuplicateEmptyStmt(x *ast.EmptyStmt) *ast.EmptyStmt {
 	if x == nil {
 		return nil
@@ -615,6 +656,7 @@ func DuplicateEmptyStmt(x *ast.EmptyStmt) *ast.EmptyStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the LabeledStmt.
 func DuplicateLabeledStmt(x *ast.LabeledStmt) *ast.LabeledStmt {
 	if x == nil {
 		return nil
@@ -627,6 +669,7 @@ func DuplicateLabeledStmt(x *ast.LabeledStmt) *ast.LabeledStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the ExprStmt.
 func DuplicateExprStmt(x *ast.ExprStmt) *ast.ExprStmt {
 	if x == nil {
 		return nil
@@ -637,6 +680,7 @@ func DuplicateExprStmt(x *ast.ExprStmt) *ast.ExprStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the SendStmt.
 func DuplicateSendStmt(x *ast.SendStmt) *ast.SendStmt {
 	if x == nil {
 		return nil
@@ -649,6 +693,7 @@ func DuplicateSendStmt(x *ast.SendStmt) *ast.SendStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the IncDecStmt.
 func DuplicateIncDecStmt(x *ast.IncDecStmt) *ast.IncDecStmt {
 	if x == nil {
 		return nil
@@ -661,6 +706,7 @@ func DuplicateIncDecStmt(x *ast.IncDecStmt) *ast.IncDecStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the AssignStmt.
 func DuplicateAssignStmt(x *ast.AssignStmt) *ast.AssignStmt {
 	if x == nil {
 		return nil
@@ -674,6 +720,7 @@ func DuplicateAssignStmt(x *ast.AssignStmt) *ast.AssignStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the GoStmt.
 func DuplicateGoStmt(x *ast.GoStmt) *ast.GoStmt {
 	if x == nil {
 		return nil
@@ -685,6 +732,7 @@ func DuplicateGoStmt(x *ast.GoStmt) *ast.GoStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the DeferStmt.
 func DuplicateDeferStmt(x *ast.DeferStmt) *ast.DeferStmt {
 	if x == nil {
 		return nil
@@ -696,6 +744,7 @@ func DuplicateDeferStmt(x *ast.DeferStmt) *ast.DeferStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the ReturnStmt.
 func DuplicateReturnStmt(x *ast.ReturnStmt) *ast.ReturnStmt {
 	if x == nil {
 		return nil
@@ -707,6 +756,7 @@ func DuplicateReturnStmt(x *ast.ReturnStmt) *ast.ReturnStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the BranchStmt.
 func DuplicateBranchStmt(x *ast.BranchStmt) *ast.BranchStmt {
 	if x == nil {
 		return nil
@@ -719,6 +769,7 @@ func DuplicateBranchStmt(x *ast.BranchStmt) *ast.BranchStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the BlockStmt.
 func DuplicateBlockStmt(x *ast.BlockStmt) *ast.BlockStmt {
 	if x == nil {
 		return nil
@@ -731,6 +782,7 @@ func DuplicateBlockStmt(x *ast.BlockStmt) *ast.BlockStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the IfStmt.
 func DuplicateIfStmt(x *ast.IfStmt) *ast.IfStmt {
 	if x == nil {
 		return nil
@@ -745,6 +797,7 @@ func DuplicateIfStmt(x *ast.IfStmt) *ast.IfStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the CaseClause.
 func DuplicateCaseClause(x *ast.CaseClause) *ast.CaseClause {
 	if x == nil {
 		return nil
@@ -758,6 +811,7 @@ func DuplicateCaseClause(x *ast.CaseClause) *ast.CaseClause {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the SwitchStmt.
 func DuplicateSwitchStmt(x *ast.SwitchStmt) *ast.SwitchStmt {
 	if x == nil {
 		return nil
@@ -771,6 +825,7 @@ func DuplicateSwitchStmt(x *ast.SwitchStmt) *ast.SwitchStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the TypeSwitchStmt.
 func DuplicateTypeSwitchStmt(x *ast.TypeSwitchStmt) *ast.TypeSwitchStmt {
 	if x == nil {
 		return nil
@@ -784,6 +839,7 @@ func DuplicateTypeSwitchStmt(x *ast.TypeSwitchStmt) *ast.TypeSwitchStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the CommClause.
 func DuplicateCommClause(x *ast.CommClause) *ast.CommClause {
 	if x == nil {
 		return nil
@@ -797,6 +853,7 @@ func DuplicateCommClause(x *ast.CommClause) *ast.CommClause {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the SelectStmt.
 func DuplicateSelectStmt(x *ast.SelectStmt) *ast.SelectStmt {
 	if x == nil {
 		return nil
@@ -808,6 +865,7 @@ func DuplicateSelectStmt(x *ast.SelectStmt) *ast.SelectStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the ForStmt.
 func DuplicateForStmt(x *ast.ForStmt) *ast.ForStmt {
 	if x == nil {
 		return nil
@@ -822,6 +880,7 @@ func DuplicateForStmt(x *ast.ForStmt) *ast.ForStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the RangeStmt.
 func DuplicateRangeStmt(x *ast.RangeStmt) *ast.RangeStmt {
 	if x == nil {
 		return nil
@@ -838,6 +897,7 @@ func DuplicateRangeStmt(x *ast.RangeStmt) *ast.RangeStmt {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the ImportSpec.
 func DuplicateImportSpec(x *ast.ImportSpec) *ast.ImportSpec {
 	if x == nil {
 		return nil
@@ -852,6 +912,7 @@ func DuplicateImportSpec(x *ast.ImportSpec) *ast.ImportSpec {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the ValueSpec.
 func DuplicateValueSpec(x *ast.ValueSpec) *ast.ValueSpec {
 	if x == nil {
 		return nil
@@ -866,6 +927,7 @@ func DuplicateValueSpec(x *ast.ValueSpec) *ast.ValueSpec {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the TypeSpec.
 func DuplicateTypeSpec(x *ast.TypeSpec) *ast.TypeSpec {
 	if x == nil {
 		return nil
@@ -880,6 +942,7 @@ func DuplicateTypeSpec(x *ast.TypeSpec) *ast.TypeSpec {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the BadDecl.
 func DuplicateBadDecl(x *ast.BadDecl) *ast.BadDecl {
 	if x == nil {
 		return nil
@@ -891,6 +954,7 @@ func DuplicateBadDecl(x *ast.BadDecl) *ast.BadDecl {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the GenDecl.
 func DuplicateGenDecl(x *ast.GenDecl) *ast.GenDecl {
 	if x == nil {
 		return nil
@@ -906,6 +970,7 @@ func DuplicateGenDecl(x *ast.GenDecl) *ast.GenDecl {
 	}
 }
 
+// Makes a deep copy of the syntax tree rooted at the FuncDecl.
 func DuplicateFuncDecl(x *ast.FuncDecl) *ast.FuncDecl {
 	if x == nil {
 		return nil
@@ -920,8 +985,9 @@ func DuplicateFuncDecl(x *ast.FuncDecl) *ast.FuncDecl {
 	}
 }
 
-// The Scope field is not duplicated; it points to the old tree's object. The
-// Imports, Unresolved, and Comments fields are nil.
+// Makes a deep copy of the syntax tree rooted at the File. The Scope field is
+// not duplicated; it points to the old tree's object. The Imports, Unresolved,
+// and Comments fields are nil.
 func DuplicateFile(x *ast.File) *ast.File {
 	if x == nil {
 		return nil
@@ -941,8 +1007,9 @@ func DuplicateFile(x *ast.File) *ast.File {
 	}
 }
 
-// The Scope field is not duplicated; it points to the old tree's object. The
-// Imports and Files fields are nil.
+// Makes a deep copy of the syntax tree rooted at the Package. The Scope field
+// is not duplicated; it points to the old tree's object. The Imports and Files
+// fields are nil.
 func DuplicatePackage(x *ast.Package) *ast.Package {
 	if x == nil {
 		return nil
