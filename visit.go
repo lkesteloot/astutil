@@ -10,17 +10,25 @@ import (
 	"go/ast"
 )
 
+// This interface allows you to walk through the tree and replace some nodes wholesale.
 type Visitor interface {
+	// This is for read-only nodes. You can inspect the node, can change its content,
+	// but can't replace the node. You may get expressions and statements here if
+	// they're in a position that can't be changed.
 	ProcessNode(node ast.Node)
-	ProcessIdent(ident **ast.Ident)
+
+	// This is an expression that you can inspect and change. You can even point it
+	// to a different expression.
 	ProcessExpr(expr *ast.Expr)
+
+	// This is an statement that you can inspect and change. You can even point it
+	// to a different statement.
 	ProcessStmt(stmt *ast.Stmt)
-	ProcessDecl(decl *ast.Decl)
 }
 
 func walkIdentList(v Visitor, list []*ast.Ident) {
 	for i, _ := range list {
-		visitIdent(v, &list[i])
+		VisitNode(v, list[i])
 	}
 }
 
@@ -38,7 +46,7 @@ func walkStmtList(v Visitor, list []ast.Stmt) {
 
 func walkDeclList(v Visitor, list []ast.Decl) {
 	for i, _ := range list {
-		VisitDecl(v, &list[i])
+		VisitNode(v, list[i])
 	}
 }
 
@@ -57,14 +65,18 @@ func visitArrayType(v Visitor, a *ast.ArrayType) {
 	VisitExpr(v, &a.Elt)
 }
 
-func visitIdent(v Visitor, ident **ast.Ident) {
-	v.ProcessIdent(ident)
-}
-
 func VisitExpr(v Visitor, expr *ast.Expr) {
 	v.ProcessExpr(expr)
 
-	switch n := (*expr).(type) {
+	if !checkExpr(v, *expr) {
+		fmt.Printf("ast.VisitExpr: unexpected node type %T", *expr)
+		panic("ast.VisitExpr")
+	}
+}
+
+// Returns whether the expression was handled.
+func checkExpr(v Visitor, expr ast.Expr) bool {
+	switch n := expr.(type) {
 	case *ast.BadExpr, *ast.Ident, *ast.BasicLit:
 		// nothing to do
 
@@ -88,7 +100,7 @@ func VisitExpr(v Visitor, expr *ast.Expr) {
 
 	case *ast.SelectorExpr:
 		VisitExpr(v, &n.X)
-		visitIdent(v, &n.Sel)
+		VisitNode(v, n.Sel)
 
 	case *ast.IndexExpr:
 		VisitExpr(v, &n.X)
@@ -132,26 +144,35 @@ func VisitExpr(v Visitor, expr *ast.Expr) {
 		visitArrayType(v, n)
 
 	default:
-		fmt.Printf("ast.VisitExpr: unexpected node type %T", n)
-		panic("ast.VisitExpr")
+		return false
 	}
+
+	return true
 }
 
 func VisitStmt(v Visitor, stmt *ast.Stmt) {
 	v.ProcessStmt(stmt)
 
-	switch n := (*stmt).(type) {
+	if !checkStmt(v, *stmt) {
+		fmt.Printf("ast.VisitStmt: unexpected node type %T", *stmt)
+		panic("ast.VisitStmt")
+	}
+}
+
+// Returns whether the statement was handled.
+func checkStmt(v Visitor, stmt ast.Stmt) bool {
+	switch n := stmt.(type) {
 	case *ast.BadStmt:
 		// nothing to do
 
 	case *ast.DeclStmt:
-		VisitDecl(v, &n.Decl)
+		VisitNode(v, n.Decl)
 
 	case *ast.EmptyStmt:
 		// nothing to do
 
 	case *ast.LabeledStmt:
-		visitIdent(v, &n.Label)
+		VisitNode(v, n.Label)
 		VisitStmt(v, &n.Stmt)
 
 	case *ast.ExprStmt:
@@ -245,43 +266,10 @@ func VisitStmt(v Visitor, stmt *ast.Stmt) {
 		visitBlockStmt(v, n.Body)
 
 	default:
-		fmt.Printf("ast.VisitStmt: unexpected node type %T", n)
-		panic("ast.VisitStmt")
+		return false
 	}
-}
 
-func VisitDecl(v Visitor, decl *ast.Decl) {
-	v.ProcessDecl(decl)
-
-	switch n := (*decl).(type) {
-	case *ast.BadDecl:
-		// nothing to do
-
-	case *ast.GenDecl:
-		if n.Doc != nil {
-			VisitNode(v, n.Doc)
-		}
-		for _, s := range n.Specs {
-			VisitNode(v, s)
-		}
-
-	case *ast.FuncDecl:
-		if n.Doc != nil {
-			VisitNode(v, n.Doc)
-		}
-		if n.Recv != nil {
-			VisitNode(v, n.Recv)
-		}
-		visitIdent(v, &n.Name)
-		VisitNode(v, n.Type)
-		if n.Body != nil {
-			visitBlockStmt(v, n.Body)
-		}
-
-	default:
-		fmt.Printf("ast.VisitDecl: unexpected node type %T", n)
-		panic("ast.VisitDecl")
-	}
+	return true
 }
 
 func VisitNode(v Visitor, node ast.Node) {
@@ -346,7 +334,7 @@ func VisitNode(v Visitor, node ast.Node) {
 			VisitNode(v, n.Doc)
 		}
 		if n.Name != nil {
-			visitIdent(v, &n.Name)
+			VisitNode(v, n.Name)
 		}
 		VisitNode(v, n.Path)
 		if n.Comment != nil {
@@ -370,19 +358,43 @@ func VisitNode(v Visitor, node ast.Node) {
 		if n.Doc != nil {
 			VisitNode(v, n.Doc)
 		}
-		visitIdent(v, &n.Name)
+		VisitNode(v, n.Name)
 		VisitExpr(v, &n.Type)
 		if n.Comment != nil {
 			VisitNode(v, n.Comment)
 		}
 
+	// Declarations.
+	case *ast.BadDecl:
+		// nothing to do
+
+	case *ast.GenDecl:
+		if n.Doc != nil {
+			VisitNode(v, n.Doc)
+		}
+		for _, s := range n.Specs {
+			VisitNode(v, s)
+		}
+
+	case *ast.FuncDecl:
+		if n.Doc != nil {
+			VisitNode(v, n.Doc)
+		}
+		if n.Recv != nil {
+			VisitNode(v, n.Recv)
+		}
+		VisitNode(v, n.Name)
+		VisitNode(v, n.Type)
+		if n.Body != nil {
+			visitBlockStmt(v, n.Body)
+		}
 
 	// Files and packages
 	case *ast.File:
 		if n.Doc != nil {
 			VisitNode(v, n.Doc)
 		}
-		visitIdent(v, &n.Name)
+		VisitNode(v, n.Name)
 		walkDeclList(v, n.Decls)
 		for _, g := range n.Comments {
 			VisitNode(v, g)
@@ -394,6 +406,18 @@ func VisitNode(v Visitor, node ast.Node) {
 	case *ast.Package:
 		for _, f := range n.Files {
 			VisitNode(v, f)
+		}
+
+	case ast.Stmt:
+		if !checkStmt(v, n) {
+			fmt.Printf("ast.VisitNode: unexpected stmt type %T", n)
+			panic("ast.VisitNode")
+		}
+
+	case ast.Expr:
+		if !checkExpr(v, n) {
+			fmt.Printf("ast.VisitNode: unexpected expr type %T", n)
+			panic("ast.VisitNode")
 		}
 
 	default:
