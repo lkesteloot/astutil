@@ -75,3 +75,14 @@ to zero out the position altogether:
 
     astutil.StripOutPos(n)
 
+Imports
+-------
+
+If you've modified the AST to add function calls into other modules, you may need
+to add imports for those modules. Use this functions to do that:
+
+    astutil.AddImport(f, "fmt")
+
+This is, in general, a tricky thing to do, since imports can have paths, be imported
+as aliases, and can be shadowed by local variables. This function only handles the
+simplest of cases.
