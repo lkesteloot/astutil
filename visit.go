@@ -69,7 +69,7 @@ func VisitExpr(v Visitor, expr *ast.Expr) {
 	v.ProcessExpr(expr)
 
 	if !checkExpr(v, *expr) {
-		fmt.Printf("ast.VisitExpr: unexpected node type %T", *expr)
+		fmt.Printf("ast.VisitExpr: unexpected node type %T\n", *expr)
 		panic("ast.VisitExpr")
 	}
 }
@@ -143,6 +143,25 @@ func checkExpr(v Visitor, expr ast.Expr) bool {
 	case *ast.ArrayType:
 		visitArrayType(v, n)
 
+	case *ast.StructType:
+		VisitNode(v, n.Fields)
+
+	case *ast.FuncType:
+		VisitNode(v, n.Params)
+		if n.Results != nil {
+			VisitNode(v, n.Results)
+		}
+
+	case *ast.InterfaceType:
+		VisitNode(v, n.Methods)
+
+	case *ast.MapType:
+		VisitNode(v, n.Key)
+		VisitNode(v, n.Value)
+
+	case *ast.ChanType:
+		VisitExpr(v, &n.Value)
+
 	default:
 		return false
 	}
@@ -154,7 +173,7 @@ func VisitStmt(v Visitor, stmt *ast.Stmt) {
 	v.ProcessStmt(stmt)
 
 	if !checkStmt(v, *stmt) {
-		fmt.Printf("ast.VisitStmt: unexpected node type %T", *stmt)
+		fmt.Printf("ast.VisitStmt: unexpected node type %T\n", *stmt)
 		panic("ast.VisitStmt")
 	}
 }
@@ -306,29 +325,6 @@ func VisitNode(v Visitor, node ast.Node) {
 			VisitNode(v, f)
 		}
 
-	// Types
-	case *ast.ArrayType:
-		visitArrayType(v, n)
-
-	case *ast.StructType:
-		VisitNode(v, n.Fields)
-
-	case *ast.FuncType:
-		VisitNode(v, n.Params)
-		if n.Results != nil {
-			VisitNode(v, n.Results)
-		}
-
-	case *ast.InterfaceType:
-		VisitNode(v, n.Methods)
-
-	case *ast.MapType:
-		VisitNode(v, n.Key)
-		VisitNode(v, n.Value)
-
-	case *ast.ChanType:
-		VisitExpr(v, &n.Value)
-
 	case *ast.ImportSpec:
 		if n.Doc != nil {
 			VisitNode(v, n.Doc)
@@ -410,18 +406,18 @@ func VisitNode(v Visitor, node ast.Node) {
 
 	case ast.Stmt:
 		if !checkStmt(v, n) {
-			fmt.Printf("ast.VisitNode: unexpected stmt type %T", n)
+			fmt.Printf("ast.VisitNode: unexpected stmt type %T\n", n)
 			panic("ast.VisitNode")
 		}
 
 	case ast.Expr:
 		if !checkExpr(v, n) {
-			fmt.Printf("ast.VisitNode: unexpected expr type %T", n)
+			fmt.Printf("ast.VisitNode: unexpected expr type %T\n", n)
 			panic("ast.VisitNode")
 		}
 
 	default:
-		fmt.Printf("ast.VisitNode: unexpected node type %T", n)
+		fmt.Printf("ast.VisitNode: unexpected node type %T\n", n)
 		panic("ast.VisitNode")
 	}
 }

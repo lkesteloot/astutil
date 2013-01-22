@@ -26,6 +26,8 @@ func pathMatchesPkgName(path, pkgName string) bool {
 
 // Add an import for pkgName to f if it's used in the tree and not already imported.
 func AddImport(f *ast.File, pkgName string) {
+	// XXX We don't handle pkgName like "go/ast".
+
 	// See if the package is already imported and/or used.
 	packageImported := false
 	packageUsed := false
